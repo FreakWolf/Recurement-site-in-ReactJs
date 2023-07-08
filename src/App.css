@@ -305,3 +305,22 @@
 .company-logo.exit-animation:nth-child(6) {
   animation: exitToLeft 1s linear 1.0s forwards;
 }
+
+.cta-button {
+  background-color: #333;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  padding: 8px 16px;
+  font-size: 14px;
+  border-radius: 10px;
+  margin-top: 20px;
+}
+
+.cta-button:hover {
+  background-color: #555;
+}
+
+.cta-button:focus {
+  outline: none;
+}

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import "../App.css";
 import svg from "../assets/office.png";
 import Logo from "../assets/logo.png";
@@ -17,6 +18,7 @@ const App = () => {
   const [jobRole, setJobRole] = useState("");
   const [isRolling, setIsRolling] = useState(false);
   const [email, setEmail] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     let currentText = "";
@@ -55,23 +57,8 @@ const App = () => {
         jobRole: jobRole,
       };
 
-      // Make an API call to fetch candidates based on searchQuery
-      fetch("/api/candidates", {
-        method: "POST",
-        body: JSON.stringify(searchQuery),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          console.log("Candidates found:", data);
-          // Update state or perform further actions with the fetched candidates
-        })
-        .catch((error) => {
-          console.log("Error occurred while searching for candidates:", error);
-          // Handle the error gracefully
-        });
+      // Navigate to the search page with the search query
+      navigate("/search", { state: { searchQuery } });
     } else {
       console.log(
         "Please enter both location and job role to perform the search."
@@ -145,17 +132,21 @@ const App = () => {
             </h2>
             <p>
               Are you tired of sifting through stacks of resumes and spending
-              hours on manual hiring processes? Look no further! Our online
-              recruitment solution is here to revolutionize your hiring
-              experience.
+              hours on manual hiring processes? Look no further! HireWave is an
+              online recruitment solution that revolutionizes your hiring
+              experience. With HireWave, you can efficiently find and hire the
+              best talent, streamline your hiring processes, and achieve
+              effective results.
             </p>
+            <button className="cta-button" onClick={handleSubscribe}>
+              Sign Up for a Free Trial
+            </button>
           </div>
         </div>
         <div className="description-image">
           <img src={svg} alt="Office" />
         </div>
       </section>
-      {/* <div className="rectangular-box"> */}
       <section className="search-section">
         <div className="search-form">
           <h2>Find Candidates</h2>
@@ -182,13 +173,12 @@ const App = () => {
             <datalist id="jobRoleOptions">
               <option value="Software Engineer" />
               <option value="Product Manager" />
-              <option value="Graphic Designer" />
+              <option value="Web Developer" />
             </datalist>
             <button onClick={handleSearch}>Search</button>
           </div>
         </div>
       </section>
-      {/* </div> */}
       <div className="company-bar">
         {companies.map((company, index) => (
           <div

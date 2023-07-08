@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import CandidateProfileCard from "./CandidateProfileCard";
 import Logo from "../assets/logo.png";
 
@@ -100,10 +101,30 @@ const candidates = [
   // Add more candidate objects as needed
 ];
 
+
 const CandidateSearch = () => {
-  const [searchLocation, setSearchLocation] = useState("");
-  const [searchRole, setSearchRole] = useState("");
+  const location = useLocation();
+  const searchQuery = location.state?.searchQuery || {}; // Access search filter from location.state
+  const { location: searchLocationProp, jobRole: searchRoleProp } = searchQuery;
+
+  const [searchLocation, setSearchLocation] = useState(searchLocationProp || "");
+  const [searchRole, setSearchRole] = useState(searchRoleProp || "");
   const [searchResults, setSearchResults] = useState(candidates);
+
+  useEffect(() => {
+    applySearchFilter();
+  }, []);
+
+  const applySearchFilter = () => {
+    const filteredResults = candidates.filter(
+      (candidate) =>
+        candidate.location
+          .toLowerCase()
+          .includes(searchLocation.toLowerCase()) &&
+        candidate.role.toLowerCase().includes(searchRole.toLowerCase())
+    );
+    setSearchResults(filteredResults);
+  };
 
   const handleLocationChange = (e) => {
     setSearchLocation(e.target.value);
@@ -114,14 +135,7 @@ const CandidateSearch = () => {
   };
 
   const handleSearch = () => {
-    const filteredResults = candidates.filter(
-      (candidate) =>
-        candidate.location
-          .toLowerCase()
-          .includes(searchLocation.toLowerCase()) &&
-        candidate.role.toLowerCase().includes(searchRole.toLowerCase())
-    );
-    setSearchResults(filteredResults);
+    applySearchFilter();
   };
 
   return (
@@ -168,12 +182,11 @@ const CandidateSearch = () => {
               <option value="Product Manager" />
               <option value="Web Developer" />
             </datalist>
-            <button onClick={handleSearch}>Search</button>
+      <button onClick={handleSearch}>Search</button>
           </div>
         </div>
       </section>
       <div className="candidate-grid">
-        {/* Render multiple CandidateProfileCard components */}
         {searchResults.map((candidate) => (
           <CandidateProfileCard
             key={candidate.id}
