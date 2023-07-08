@@ -119,7 +119,6 @@ const App = () => {
         </div>
         <div className="nav-links">
           <a href="/">Home</a>
-          <a href="#">Contact Us</a>
           <a href="/Login">Login/Register</a>
           <a href="/search">Search</a>
         </div>
